@@ -1,0 +1,7 @@
+<?php
+$facebook_settings = [
+    "app_id" => "<APP ID from Facebook App>",
+    "app_secret" => "<APP Secret from Facebook App>",
+    "app_version" => "<Version of Facebook App>",
+    "callback" => "http://your.local.domain/login_callback.php",
+];

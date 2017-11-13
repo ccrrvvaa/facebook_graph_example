@@ -1,0 +1,13 @@
+{
+    "name": "vendor/facebook-sdk-test",
+    "description": "Testing for facebook information",
+    "authors": [
+        {
+            "name": "Cesar Vargas",
+            "email": "cesar.vargas.aliaga@gmail.com"
+        }
+    ],
+    "require": {
+        "facebook/graph-sdk": "^5.6"
+    }
+}
