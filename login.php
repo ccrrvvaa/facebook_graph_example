@@ -8,14 +8,25 @@ if(!session_id()) {
 }
 
 $fb = new \Facebook\Facebook([
-    'app_id' => $settings['app_id'],
-    'app_secret' => $settings['app_secret'],
-    'default_graph_version' => $settings['app_version'],
+    'app_id' => SETTINGS['app_id'],
+    'app_secret' => SETTINGS['app_secret'],
+    'default_graph_version' => SETTINGS['app_version'],
     //'default_access_token' => '{access-token}', // optional
 ]);
 
 $helper = $fb->getRedirectLoginHelper();
 $permissions = ['user_posts'];
-$loginUrl = $helper->getLoginUrl($settings['callback'], $permissions);
+$loginUrl = $helper->getLoginUrl(SETTINGS['callback'], $permissions);
 
-echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
+include_once __DIR__ . '/header.php'; ?>
+
+<main>
+    <div style="text-align: center;">
+        <a href="<?= $loginUrl ?>" class="fa fa-facebook">
+            <span>Login</span>
+        </a>
+    </div>
+</main>
+
+<?php
+include_once __DIR__ . '/footer.php';

@@ -8,9 +8,9 @@ if(!session_id()) {
 }
 
 $fb = new \Facebook\Facebook([
-    'app_id' => $settings['app_id'],
-    'app_secret' => $settings['app_secret'],
-    'default_graph_version' => $settings['app_version'],
+    'app_id' => SETTINGS['app_id'],
+    'app_secret' => SETTINGS['app_secret'],
+    'default_graph_version' => SETTINGS['app_version'],
     //'default_access_token' => '{access-token}', // optional
 ]);
 
@@ -19,12 +19,10 @@ try {
     $accessToken = $helper->getAccessToken();
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
     // When Graph returns an error
-    echo 'Graph returned an error: ' . $e->getMessage();
-    exit;
+    $message = 'Graph returned an error: ' . $e->getMessage();
 } catch(Facebook\Exceptions\FacebookSDKException $e) {
     // When validation fails or other local issues
-    echo 'Facebook SDK returned an error: ' . $e->getMessage();
-    exit;
+    $message = 'Facebook SDK returned an error: ' . $e->getMessage();
 }
 
 if(isset($accessToken)) {
@@ -34,32 +32,27 @@ if(isset($accessToken)) {
         $accessTokenLong = $client->getLongLivedAccessToken($accessToken);
     } catch(Facebook\Exceptions\FacebookSDKException $e) {
         // There was an error communicating with Graph
-        echo $e->getMessage();
-        exit;
+        $message = $e->getMessage();
     }
 
     if (isset($accessTokenLong)) {
-
-        try {
-            // Get the \Facebook\GraphNodes\GraphUser object for the current user.
-            // If you provided a 'default_access_token', the '{access-token}' is optional.
-            $response = $fb->get('/me', $accessTokenLong);
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
-            // When Graph returns an error
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
-            // When validation fails or other local issues
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
-        }
-        
-        $me = $response->getGraphUser();
-        echo 'Logged in as ' . $me->getId() . " - " . $me->getName();
-        // TODO Save the $accessTokenLong
+        $_SESSION['access_token'] = $accessTokenLong;
+        header('Location: index.php');
+        exit;
     } else {
-        echo "No existe el long lived access token";
+        $message = "No existe el long lived access token";
     }
 } else {
-    echo "No existe el access token";
+    $message = "No existe el access token";
 }
+
+include_once __DIR__ . '/header.php'; ?>
+
+<main>
+    <p class="bg-danger" style="text-align: center;">
+        <?= $message ?>
+    </p>
+</main>
+
+<?php
+include_once __DIR__ . '/footer.php';

@@ -1,0 +1,31 @@
+.fa {
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+}
+.fa:hover {
+    color: white;
+    text-decoration: none;
+}
+.fa span {
+    border-color: white;
+    border-left-width: 1px;
+    border-left-style: solid;
+    margin-left: 5px;
+    padding-left: 12px;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+.bg-danger {
+    padding: 10px;
+}
