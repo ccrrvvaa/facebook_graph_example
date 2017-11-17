@@ -40,7 +40,7 @@ if(isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         try {
             // Returns a `Facebook\FacebookResponse` object
             $response = $fb->get(
-                '/me/feed',
+                '/me/posts?fields=id,message,story,link,full_picture&limit=15',
                 $accessToken
             );
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -49,8 +49,44 @@ if(isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $meesage = 'Facebook SDK returned an error: ' . $e->getMessage();
         }
         
-        $graphNode = $response->getGraphNode();
-        var_dump($graphNode);
+        // Page 1
+        $feeds = $response->getGraphEdge();
+
+        ?>
+        <main>
+            <div class="row">
+                <?php foreach ($feeds as $feed): 
+                    $data = $feed->asArray(); ?>
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="thumbnail">
+                            <?php if(isset($data['full_picture'])): ?>
+                                <a target="_blank" href="<?= $data['link'] ?? '#' ?>"><img src="<?= $data['full_picture'] ?>" alt="..."></a>
+                            <?php endif; ?>
+                            <div class="caption">
+                                <?php if(isset($data['story'])): ?>
+                                    <div>
+                                        <p><?= $data['story'] ?></p>
+                                    </div>
+                                <?php endif;
+                                if(isset($data['message'])): ?>
+                                    <div>
+                                        <p><?= $data['message'] ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </main>
+        
+        <?php
+        // Page 2 (next 5 results)
+        /*$nextFeed = $fb->next($feedEdge);
+
+        foreach ($nextFeed as $status) {
+            var_dump($status->asArray());
+        }*/
     } else { ?>
         <main>
             <p class="bg-danger" style="text-align: center;">

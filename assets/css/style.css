@@ -29,3 +29,8 @@
 .bg-danger {
     padding: 10px;
 }
+
+.thumbnail .caption {
+    border-top: 1px solid #ddd;
+    margin-top: 4px;
+}
