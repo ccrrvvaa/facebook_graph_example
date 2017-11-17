@@ -7,9 +7,6 @@ if(!session_id()) {
     session_start();
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 $fb = new \Facebook\Facebook([
     'app_id' => SETTINGS['app_id'],
     'app_secret' => SETTINGS['app_secret'],
@@ -49,7 +46,6 @@ if(isset($_SESSION['access_token']) && $_SESSION['access_token']) {
             $meesage = 'Facebook SDK returned an error: ' . $e->getMessage();
         }
         
-        // Page 1
         $feeds = $response->getGraphEdge();
 
         ?>
@@ -78,16 +74,8 @@ if(isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                     </div>
                 <?php endforeach; ?>
             </div>
-        </main>
-        
-        <?php
-        // Page 2 (next 5 results)
-        /*$nextFeed = $fb->next($feedEdge);
-
-        foreach ($nextFeed as $status) {
-            var_dump($status->asArray());
-        }*/
-    } else { ?>
+        </main>        
+<?php } else { ?>
         <main>
             <p class="bg-danger" style="text-align: center;">
                 <?= $message ?>
